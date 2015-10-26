@@ -70,7 +70,7 @@ public class Main {
 					if (totalQueryContent <= resultLimit) {
 						String day = formatter.format(date);
 						PrintWriter writer = new PrintWriter(dis + "/" + day
-								+ ".txt", "UTF-8");
+								+ ".json", "UTF-8");
 						writer.println(json.toString());
 						writer.close();
 
@@ -86,7 +86,7 @@ public class Main {
 								fragment = (i / resultLimit) + 1;
 							}
 							PrintWriter writer = new PrintWriter(dis + "/"
-									+ day + "_" + fragment + ".txt", "UTF-8");
+									+ day + "_" + fragment + ".json", "UTF-8");
 							writer.println(jsonMultibe.toString());
 							writer.close();
 						}
