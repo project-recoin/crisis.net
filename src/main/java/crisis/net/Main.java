@@ -20,20 +20,23 @@ import org.json.JSONObject;
 
 public class Main {
 
-	public static String endPoint = "http://api.crisis.net/item?apikey=562e16afd15eddf7785a5a15";
+	public static String endPoint = "http://api.crisis.net/item";
 	static DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:MM:SS'Z'");
 	static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	static int resultLimit = 500;
+	static int DaysNumber = 0;
+	static int ProcessedDays = 0;
+	static int DaysReachedLimits = 0;
 
 	public static void usage() {
 
-		System.out.println("Main starData endDate");
+		System.out.println("Main starData endDate apiKey");
 		System.out.println("Dates should have the formate yyyy-MM-dd");
 	}
 
 	public static void main(String[] args) {
 
-		if (args.length != 2) {
+		if (args.length != 3) {
 			usage();
 			System.exit(0);
 		}
@@ -46,6 +49,8 @@ public class Main {
 		try {
 			startDate = formatter.parse(args[0]);
 			endDate = formatter.parse(args[1]);
+			String urlWithKey = endPoint + "?apikey=" + args[2];
+
 			// endDate = formatter.parse("2015-06-01");
 
 			Calendar start = Calendar.getInstance();
@@ -55,29 +60,29 @@ public class Main {
 
 			for (Date date = start.getTime(); start.after(end); start.add(
 					Calendar.DAY_OF_MONTH, -1), date = start.getTime()) {
+				DaysNumber++;
 				String IOSstring = df.format(date);
 				JSONObject json = runJson(endPoint, date, 0);
 				if (json == null) {
 					continue;
 				}
-
 				if (json.has("total")) {
 					int totalQueryContent = json.getInt("total");
 					if (totalQueryContent == 0) {
 						continue;
 					}
-
+					ProcessedDays++;
 					if (totalQueryContent <= resultLimit) {
 						String day = formatter.format(date);
 						PrintWriter writer = new PrintWriter(dis + "/" + day
 								+ ".json", "UTF-8");
 						writer.println(json.toString());
 						writer.close();
-
 					} else {
-
+						DaysReachedLimits++;
 						for (int i = 0; i < totalQueryContent; i += resultLimit) {
-							JSONObject jsonMultibe = runJson(endPoint, date, i);
+							JSONObject jsonMultibe = runJson(urlWithKey, date,
+									i);
 							String day = formatter.format(date);
 							int fragment;
 							if (i == 0) {
@@ -92,7 +97,6 @@ public class Main {
 						}
 					}
 				}
-
 			}
 
 		} catch (ParseException e) {
