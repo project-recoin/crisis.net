@@ -15,7 +15,7 @@ public class TestApi {
 
 		try {
 			URL url = new URL(
-					"http://api.crisis.net/item?apikey=562e16afd15eddf7785a5a15&after=2015-06-03&before=2015-06-04");
+					"http://api.crisis.net/item?apikey=EMPTY&after=2015-06-03&before=2015-06-04");
 			URLConnection connection = url.openConnection();
 //			connection.addRequestProperty("offset", "8");
 			connection.connect();

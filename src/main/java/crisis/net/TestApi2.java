@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class TestApi2 {
 
-	static String http = "http://api.crisis.net/item?apikey=562e16afd15eddf7785a5a15";
+	static String http = "http://api.crisis.net/item?apikey=EMPTY";
 
 	public static void main(String[] args) {
 		HttpURLConnection urlConnection = null;
