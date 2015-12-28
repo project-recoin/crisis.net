@@ -42,7 +42,7 @@ public class ToCsv {
 					System.out.println("Processing file " + listOfFiles[f]);
 					FileReader reader = new FileReader(listOfFiles[f]);
 					JSONParser jsonParser = new JSONParser();
-					JSONObject jsonObject = (JSONObject) jsonParser.parse(reader.toString());
+					JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
 					JSONArray data = (JSONArray) jsonObject.get("data");
 					// take the elements of the json array
 					for (int i = 0; i < data.size(); i++) {
