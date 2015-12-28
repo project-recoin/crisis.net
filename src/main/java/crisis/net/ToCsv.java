@@ -17,11 +17,18 @@ import org.json.simple.parser.ParseException;
 public class ToCsv {
 
 	static final String delimate = ",";
-	static final String disFile = "crisis.csv";
-	static final String jsonDir = "/Users/user/crisisNet";
+	static String disFile;
+	static String jsonDir;
 
 	public static void main(String[] args) {
 
+		if (args.length == 2) {
+			disFile = args[0];
+			jsonDir = args[1];
+		} else {
+			System.out.println("two args disFile jsonDir");
+			System.exit(-1);
+		}
 		try {
 
 			FileWriter writer = new FileWriter(disFile);
@@ -59,7 +66,7 @@ public class ToCsv {
 							if (content != null) {
 								String subString = content;
 								if (subString.length() > 20000) {
-									 subString = content.substring(0, 20000);
+									subString = content.substring(0, 20000);
 								}
 								writer.append(StringEscapeUtils.escapeCsv(subString.replaceAll("\n", "")) + delimate);
 							} else {
