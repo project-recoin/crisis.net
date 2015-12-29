@@ -16,7 +16,7 @@ import org.json.simple.parser.ParseException;
 
 public class ToCsv {
 
-	static final String delimate = ",";
+	static final String delimate = ";";
 	static String disFile;
 	static String jsonDir;
 
@@ -32,7 +32,7 @@ public class ToCsv {
 		try {
 
 			FileWriter writer = new FileWriter(disFile);
-			writer.append("id,publishedAt,content,locationName,geo_long,geo_lat,tags");
+			writer.append("id;publishedAt;content;locationName;geo_long;geo_lat;tags;");
 			writer.append("\n");
 			// read the json file
 			File folder = new File(jsonDir);
@@ -121,6 +121,7 @@ public class ToCsv {
 										writer.append(delimate);
 									}
 								}
+								string1.replace(string1.length() - 1, string1.length(), "");
 								writer.append(StringEscapeUtils.escapeCsv(string1.toString()) + delimate);
 							} else {
 								writer.append(delimate);
