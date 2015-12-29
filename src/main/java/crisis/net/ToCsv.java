@@ -121,7 +121,9 @@ public class ToCsv {
 										writer.append(delimate);
 									}
 								}
-								string1.replace(string1.length() - 1, string1.length(), "");
+								if (string1.length() > 1) {
+									string1.replace(string1.length() - 1, string1.length(), "");
+								}
 								writer.append(StringEscapeUtils.escapeCsv(string1.toString()) + delimate);
 							} else {
 								writer.append(delimate);
