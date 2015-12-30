@@ -33,7 +33,7 @@ public class ToCsv {
 
 			FileWriter writer = new FileWriter(disFile);
 			writer.append("sep=" + delimate + "\n");
-			writer.append("id;publishedAt;content;locationName;geo_long;geo_lat;tags;");
+			writer.append("id;publishedAt;locationName;geo_long;geo_lat;tags;");
 			writer.append("\n");
 			// read the json file
 			File folder = new File(jsonDir);
@@ -63,16 +63,17 @@ public class ToCsv {
 								writer.append(delimate);
 							}
 
-							String content = (String) doc.get("content");
-							if (content != null) {
-								String subString = content;
-								if (subString.length() > 20000) {
-									subString = content.substring(0, 20000);
-								}
-								writer.append(removeSpecialCharachters(subString) + delimate);
-							} else {
-								writer.append(delimate);
-							}
+							// String content = (String) doc.get("content");
+							// if (content != null) {
+							// String subString = content;
+							// if (subString.length() > 20000) {
+							// subString = content.substring(0, 20000);
+							// }
+							// writer.append(removeSpecialCharachters(subString)
+							// + delimate);
+							// } else {
+							// writer.append(delimate);
+							// }
 
 							JSONObject geo = (JSONObject) doc.get("geo");
 							if (geo != null) {
