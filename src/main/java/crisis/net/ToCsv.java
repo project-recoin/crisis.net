@@ -32,6 +32,7 @@ public class ToCsv {
 		try {
 
 			FileWriter writer = new FileWriter(disFile);
+			writer.append("sep=" + delimate + "\n");
 			writer.append("id;publishedAt;content;locationName;geo_long;geo_lat;tags;");
 			writer.append("\n");
 			// read the json file
@@ -50,14 +51,14 @@ public class ToCsv {
 						if (doc != null) {
 							String id = (String) doc.get("id");
 							if (id != null) {
-								writer.append(StringEscapeUtils.escapeCsv(id) + delimate);
+								writer.append(removeSpecialCharachters(id) + delimate);
 							} else {
 								writer.append(delimate);
 							}
 
 							String publishedAt = (String) doc.get("publishedAt");
 							if (publishedAt != null) {
-								writer.append(StringEscapeUtils.escapeCsv(publishedAt) + delimate);
+								writer.append(removeSpecialCharachters(publishedAt) + delimate);
 							} else {
 								writer.append(delimate);
 							}
@@ -68,7 +69,7 @@ public class ToCsv {
 								if (subString.length() > 20000) {
 									subString = content.substring(0, 20000);
 								}
-								writer.append(StringEscapeUtils.escapeCsv(subString.replaceAll("\n", "")) + delimate);
+								writer.append(removeSpecialCharachters(subString) + delimate);
 							} else {
 								writer.append(delimate);
 							}
@@ -80,9 +81,9 @@ public class ToCsv {
 									String formattedAddress = (String) addressComponents.get("formattedAddress");
 									String adminArea1 = (String) addressComponents.get("adminArea1");
 									if (formattedAddress != null) {
-										writer.append(StringEscapeUtils.escapeCsv(formattedAddress) + delimate);
+										writer.append(removeSpecialCharachters(formattedAddress) + delimate);
 									} else if (adminArea1 != null) {
-										writer.append(StringEscapeUtils.escapeCsv(adminArea1) + delimate);
+										writer.append(removeSpecialCharachters(adminArea1) + delimate);
 									} else {
 										writer.append(delimate);
 									}
@@ -93,12 +94,12 @@ public class ToCsv {
 								JSONArray coords = (JSONArray) geo.get("coords");
 								if (coords != null) {
 									if (coords.get(0) != null) {
-										writer.append(StringEscapeUtils.escapeCsv(coords.get(0).toString()) + delimate);
+										writer.append(removeSpecialCharachters(coords.get(0).toString()) + delimate);
 									} else {
 										writer.append(delimate);
 									}
 									if (coords.get(1) != null) {
-										writer.append(StringEscapeUtils.escapeCsv(coords.get(1).toString()) + delimate);
+										writer.append(removeSpecialCharachters(coords.get(1).toString()) + delimate);
 									} else {
 										writer.append(delimate);
 									}
@@ -116,7 +117,7 @@ public class ToCsv {
 									JSONObject tag = (JSONObject) tags.get(j);
 									if (tag != null) {
 										String name = (String) tag.get("name");
-										string1.append(name + ",");
+										string1.append(removeSpecialCharachters(name) + ",");
 									} else {
 										writer.append(delimate);
 									}
@@ -124,7 +125,7 @@ public class ToCsv {
 								if (string1.length() > 1) {
 									string1.replace(string1.length() - 1, string1.length(), "");
 								}
-								writer.append(StringEscapeUtils.escapeCsv(string1.toString()) + delimate);
+								writer.append(removeSpecialCharachters(string1.toString()) + delimate);
 							} else {
 								writer.append(delimate);
 							}
@@ -147,6 +148,16 @@ public class ToCsv {
 			ex.printStackTrace();
 		}
 
+	}
+
+	private static String removeSpecialCharachters(String source) {
+
+		source = source.replaceAll("\"", "");
+		source = source.replaceAll("'", "");
+		source = source.replaceAll("\n", "");
+		source = source.replaceAll(delimate, "");
+
+		return source;
 	}
 
 }
